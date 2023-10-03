@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.Instant;
 import java.util.List;
 
 @Service
@@ -29,17 +30,9 @@ public class PostService {
 		return result;
 	}
 
-	/*
-	
-	public List<PostDTO> findByTitle(String text) {
-		List<PostDTO> result = repository.searchTitle(text).stream().map(x -> new PostDTO(x)).toList();
-		return result;
-	}
-	
-	public List<PostDTO> fullSearch(String text, Instant minDate, Instant maxDate) {
+	public Flux<PostDTO> fullSearch(String text, Instant minDate, Instant maxDate) {
 		maxDate = maxDate.plusSeconds(86400); // 24 * 60 * 60
-		List<PostDTO> result = repository.fullSearch(text, minDate, maxDate).stream().map(x -> new PostDTO(x)).toList();
+		Flux<PostDTO> result = repository.fullSearch(text, minDate, maxDate).map(x -> new PostDTO(x));
 		return result;
 	}
-	 */
 }
