@@ -7,7 +7,10 @@ import com.devsuperior.workshopmongo.repositories.PostRepository;
 import com.devsuperior.workshopmongo.services.exceptioons.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 @Service
 public class PostService {
@@ -19,6 +22,11 @@ public class PostService {
 		return repository.findById(id)
 				.map(x -> new PostDTO(x))
 				.switchIfEmpty(Mono.error(new ResourceNotFoundException("Recurso não encontrado")));
+	}
+
+	public Flux<PostDTO> findByTitle(String text) {
+		Flux<PostDTO> result = repository.searchTitle(text).map(x -> new PostDTO(x));
+		return result;
 	}
 
 	/*
